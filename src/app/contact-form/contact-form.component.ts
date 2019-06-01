@@ -22,9 +22,17 @@ export class ContactFormComponent implements OnInit {
   constructor() { }
 
   onSubmit(form: NgForm){
-    this.contacts.push({...form.value, id: this.id++});
-    form.reset();
-    console.log(this.contacts);
+    if(!this.updateMode){
+      this.contacts.push({...form.value, id: this.id++});
+    }else{
+      const index: number = this.contacts.findIndex(
+        x => !!x && x.id === this.currContact.id
+        );
+      this.contacts[index] = {...form.value, id: this.currContact.id};
+      this.updateMode = false;
+    }
+    //form.reset();
+    //console.log(this.contacts);
   }
 
   private onRowSelected(id: number): void {

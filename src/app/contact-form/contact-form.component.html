@@ -12,13 +12,13 @@
     <label for="">Phone Number:</label>
     <input [(ngModel)]="currContact.phone" type="text" required name="phone"/>
   </div>
-  <button type="submit">Submit</button>
+  <button type="submit">{{!updateMode?'Submit':'Update'}}</button>
 </form>
 
 <div>
   <div *ngFor="let contact of contacts">
     <div *ngIf="!!contact">
-      <input type="checkbox" name="contact" (click)="onRowSelected(contact.id)"><br>
+      <input type="radio" name="contact" (click)="onRowSelected(contact.id)"><br>
         <p>{{contact.name}}</p>
         <p>{{contact.lastName}}</p>
         <p>{{contact.phone}}</p>
