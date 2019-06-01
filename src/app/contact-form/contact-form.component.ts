@@ -16,14 +16,26 @@ class Contact{
 export class ContactFormComponent implements OnInit {
   private currContact: Contact = new Contact();
   private id: number=0;
+  private updateMode: boolean = false;
   private contacts: Contact[] = [];
 
   constructor() { }
 
   onSubmit(form: NgForm){
     this.contacts.push({...form.value, id: this.id++});
-    // form.reset();
+    form.reset();
     console.log(this.contacts);
+  }
+
+  private onRowSelected(id: number): void {
+    const index: number = this.contacts.findIndex(x => !!x && x.id === id);
+    this.updateMode = true;
+    this.currContact = this.contacts[index];
+  }
+
+  private onDelete(id: number):void{
+    const index: number = this.contacts.findIndex(x => !!x && x.id === id);
+    this.contacts[index] = null;
   }
 
   ngOnInit() {

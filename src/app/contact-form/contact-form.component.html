@@ -14,3 +14,16 @@
   </div>
   <button type="submit">Submit</button>
 </form>
+
+<div>
+  <div *ngFor="let contact of contacts">
+    <div *ngIf="!!contact">
+      <input type="checkbox" name="contact" (click)="onRowSelected(contact.id)"><br>
+        <p>{{contact.name}}</p>
+        <p>{{contact.lastName}}</p>
+        <p>{{contact.phone}}</p>
+        <button (click)="onDelete(contact.id)">Delete</button>
+    </div>
+    
+  </div>
+</div>
