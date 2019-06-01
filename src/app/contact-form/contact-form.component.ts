@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm} from '@angular/forms';
-import { timingSafeEqual } from 'crypto';
 
 class Contact{
   id: number;
