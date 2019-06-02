@@ -1,11 +1,12 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { NgForm} from '@angular/forms';
 
 class Contact{
   id: number;
-  name: string;
+  firstName: string;
   lastName: string;
-  phone: string;
+  phones: Object;
 }
 
 @Component({
@@ -22,17 +23,19 @@ export class ContactFormComponent implements OnInit {
   constructor() { }
 
   onSubmit(form: NgForm){
-    if(!this.updateMode){
-      this.contacts.push({...form.value, id: this.id++});
-    }else{
-      const index: number = this.contacts.findIndex(
-        x => !!x && x.id === this.currContact.id
-        );
-      this.contacts[index] = {...form.value, id: this.currContact.id};
-      this.updateMode = false;
+    if(form.valid){
+      if(!this.updateMode){
+        this.contacts.push({...form.value, id: this.id++});
+      }else{
+        const index: number = this.contacts.findIndex(
+          x => !!x && x.id === this.currContact.id
+          );
+        this.contacts[index] = {...form.value, id: this.currContact.id};
+        this.updateMode = false;
+      }
     }
-    //form.reset();
-    //console.log(this.contacts);
+    form.reset();
+    console.log(form.value);
   }
 
   private onRowSelected(id: number): void {
@@ -44,6 +47,12 @@ export class ContactFormComponent implements OnInit {
   private onDelete(id: number):void{
     const index: number = this.contacts.findIndex(x => !!x && x.id === id);
     this.contacts[index] = null;
+  }
+
+  onAddPhoneField():void{
+    let element = document.createElement("phone");
+    let foo = document.getElementById("fooVar");
+    foo.appendChild(element);
   }
 
   ngOnInit() {
