@@ -40,5 +40,20 @@
       </div>
     </div>
     <a type="button" (click)="addPhone()">Add new phone</a><br>
-    <button type="submit" [disabled]="!myForm.valid">Submit</button>
+    <button type="submit" [disabled]="!myForm.valid">{{!updateMode?'Submit':'Update'}}</button>
 </form>
+
+<br>
+
+
+<div *ngFor="let contact of contacts">
+    <div *ngIf="!!contact">
+      <input type="radio" name="contact" (click)="onRowSelected(contact.id)">
+        <p>{{contact.name}}</p>
+        <p>{{contact.lastName}}</p>
+        <div *ngFor="let phone of contact.phones">
+          <p>{{phone}}</p>
+        </div>
+        <button (click)="onDelete(contact.id)">Delete</button>
+    </div>
+</div>

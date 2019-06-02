@@ -1,7 +1,14 @@
+import { ArrayType } from '@angular/compiler';
 import { Contact } from './contact.interface';
 import { Component, OnInit } from '@angular/core';
 import {Validators, FormGroup, FormArray, FormBuilder, FormControl} from '@angular/forms';
-import { format } from 'path';
+
+class Contacts{
+  id: number;
+  name: string;
+  lastName: string;
+  phones: ArrayType[];
+}
 
 @Component({
   selector: 'app-contact',
@@ -10,6 +17,11 @@ import { format } from 'path';
 })
 export class ContactComponent implements OnInit {
   public myForm: FormGroup;
+  private contacts: Contacts[] = [];
+
+  private id: number=0;
+  private updateMode: boolean = false;
+  private currContact: Contacts = new Contacts();
 
   constructor(private _fb: FormBuilder) {}
 
@@ -40,8 +52,29 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit(model: Contact){
-    console.log(model);
+    if(!this.updateMode){
+      this.contacts.push({id: this.id++, ...model});
+    }else{
+      const index: number = this.contacts.findIndex(
+        x => !!x && x.id === this.currContact.id
+        );
+      this.contacts[index] = {id: this.id++, ...model};
+      this.updateMode = false;
+    }
+
     this.ngOnInit();  
+    console.log(this.contacts);
+  }
+
+  private onDelete(id: number):void{
+    const index: number = this.contacts.findIndex(x => !!x && x.id === id);
+    this.contacts[index] = null;
+  }
+
+  private onRowSelected(id: number): void {
+    const index: number = this.contacts.findIndex(x => !!x && x.id === id);
+    this.updateMode = true;
+    this.currContact = this.contacts[index];
   }
 
   phoneValidator(control: FormControl):{ [s: string]: boolean }{

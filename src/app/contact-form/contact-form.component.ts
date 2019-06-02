@@ -1,6 +1,7 @@
-import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { NgForm} from '@angular/forms';
+import { ArrayType } from '@angular/compiler';
+
 
 class Contact{
   id: number;
