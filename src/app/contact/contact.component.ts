@@ -1,6 +1,7 @@
 import { Contact } from './contact.interface';
 import { Component, OnInit } from '@angular/core';
-import {Validators, FormGroup, FormArray, FormBuilder} from '@angular/forms';
+import {Validators, FormGroup, FormArray, FormBuilder, FormControl} from '@angular/forms';
+import { format } from 'path';
 
 @Component({
   selector: 'app-contact',
@@ -24,7 +25,7 @@ export class ContactComponent implements OnInit {
 
   initPhones(){
     return this._fb.group({
-      phone: ['', Validators.required]
+      phone: ['', [Validators.required,this.phoneValidator]]
     })
   }
 
@@ -40,6 +41,13 @@ export class ContactComponent implements OnInit {
 
   onSubmit(model: Contact){
     console.log(model);
+    this.ngOnInit();  
+  }
+
+  phoneValidator(control: FormControl):{ [s: string]: boolean }{
+    if (!control.value.match(/^[2-9]\d{2}[2-9]\d{2}\d{4}$/)){
+      return {invalidPhone: true};
+    }
   }
 
 }
