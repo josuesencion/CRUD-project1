@@ -1,13 +1,6 @@
-import { 
-  Component, 
-  OnInit,
-  Input 
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormArray
-} from '@angular/forms';
+import { Contact } from './contact.interface';
+import { Component, OnInit } from '@angular/core';
+import {Validators, FormGroup, FormArray, FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
@@ -15,19 +8,38 @@ import {
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-  myForm: FormGroup;
+  public myForm: FormGroup;
 
-  constructor(fb: FormBuilder) { 
-    this.myForm = fb.group({
-      'sku': ['ABC123']
+  constructor(private _fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.myForm = this._fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
+      phones: this._fb.array([
+        this.initPhones(),
+      ])
     });
   }
 
-  onSubmit(value: string): void{
-    console.log('you submitted value: ', value);
+  initPhones(){
+    return this._fb.group({
+      phone: ['', Validators.required]
+    })
   }
 
-  ngOnInit() {
+  addPhone(){
+    const control = <FormArray>this.myForm.controls['phones'];
+    control.push(this.initPhones());
+  }
+
+  removePhone(i: number){
+    const control = <FormArray>this.myForm.controls['phones'];
+    control.removeAt(i);
+  }
+
+  onSubmit(model: Contact){
+    console.log(model);
   }
 
 }
