@@ -1,64 +1,97 @@
-<h1>Contact Form</h1>
-<form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
-    <div class="form-group">
-        <label>Name: </label>
-        <input type="text" formControlName="name">
-        <small 
-        *ngIf="myForm.controls.name.invalid 
-        && (myForm.controls.name.dirty 
-        || myForm.controls.name.touched)" class="text-danger">
-            Name is required (minimum 3 characters).
-        </small>
-    </div>
-    <div class="form-group">
-        <label>Last Name: </label>
-        <input type="text" formControlName="lastName">
-        <small 
-        *ngIf="myForm.controls.name.invalid 
-        && (myForm.controls.lastName.dirty 
-        || myForm.controls.lastName.touched)" class="text-danger">
-            Last Name is required (minimum 3 characters).
-        </small>
-    </div>
-    <div formArrayName="phones">
-      <div *ngFor="let phone of myForm.controls.phones.controls; let i=index">
-        <span *ngIf="myForm.controls.phones.controls.length > 1" 
-            (click)="removePhone(i)">
-        </span>
-        <div [formGroupName]="i">
-          <div>
-            <label>Phone {{i + 1}}</label>
-            <input type="text" formControlName="phone">
-            <small 
-            *ngIf="myForm.controls.name.invalid 
-            && (myForm.controls.lastName.dirty 
-            || myForm.controls.lastName.touched)" class="text-danger">
-            Incorrect Phone Number Format.
-            </small>
-            <a class ="btn removePhoneBtn" type="button" (click)="removePhone(i)">x</a>
+
+<div class="row">
+  <div class="col-sm-4 col-offset-sm-1" style="text-align: left;padding: 15px"  style="margin-top:50px;">
+    <h2>Contact Form</h2>
+    <form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
+      <div class="form-group float-label-control">
+          <label>Name: </label>
+          <input type="text" formControlName="name">
+          <small 
+          *ngIf="myForm.controls.name.invalid 
+          && (myForm.controls.name.dirty 
+          || myForm.controls.name.touched)" class="text-danger">
+              Name is required (minimum 3 characters).
+          </small>
+      </div>
+      <div class="form-group float-label-control">
+          <label>Last Name: </label>
+          <input type="text" formControlName="lastName">
+          <small 
+          *ngIf="myForm.controls.name.invalid 
+          && (myForm.controls.lastName.dirty 
+          || myForm.controls.lastName.touched)" class="text-danger">
+              Last Name is required (minimum 3 characters).
+          </small>
+      </div>
+      <div formArrayName="phones">
+        <div *ngFor="let phone of myForm.controls.phones.controls; let i=index">
+          <span *ngIf="myForm.controls.phones.controls.length > 1" 
+              (click)="removePhone(i)">
+          </span>
+          <div [formGroupName]="i">
+            <div class="form-group float-label-control">
+              <label>Phone {{i + 1}}</label>
+              <input type="text" formControlName="phone">
+              <small 
+              *ngIf="myForm.controls.name.invalid 
+              && (myForm.controls.lastName.dirty 
+              || myForm.controls.lastName.touched)" class="text-danger">
+              Incorrect Phone Number Format.
+              </small>
+              <a class ="btn removePhoneBtn" type="button" (click)="removePhone(i)">x</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <a class="btn custom-btn" type="button" (click)="addPhone()">Add new phone</a>
-      <button type="submit" [disabled]="!myForm.valid">{{!updateMode?'Submit':'Update'}}</button>    
-    </div>
-    
-</form>
-
-<br>
-
-<div>
-  <div *ngFor="let contact of contacts">
-    <div *ngIf="!!contact">
-      <input type="radio" name="contact" (click)="onRowSelected(contact.id)">
-        <p>{{contact.name}}</p>
-        <p>{{contact.lastName}}</p>
-        <div *ngFor="let phone of contact.phones">
-          <p>{{phone.phone}}</p>
+      <div class="row" style="display: flex">
+        <a class="btn custom-btn" type="button" (click)="addPhone()">Add new phone</a>
+        <button type="submit" [disabled]="!myForm.valid">{{!updateMode?'Submit':'Update'}}</button>    
+      </div>
+      
+   </form>
+  </div>
+  <div class="col-sm-7">
+      <h2>Contact List</h2>
+      <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Update</th>
+              <th scope="col">Firstname</th>
+              <th scope="col">Lastname</th>
+              <th scope="col">Phone Number(s)</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let contact of contacts">
+              <td *ngIf="!!contact">
+                  <input type="radio" name="contact" (click)="onRowSelected(contact.id)">
+              </td>
+              <td *ngIf="!!contact">{{contact.name}}</td>
+              <td *ngIf="!!contact">{{contact.lastName}}</td>
+              <td *ngIf="!!contact">
+                  <div *ngFor="let phone of contact.phones">
+                      <span>{{phone.phone}}</span>
+                  </div>
+              </td>
+              <td *ngIf="!!contact">
+                  <button (click)="onDelete(contact.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    <div>
+      <!-- <div *ngFor="let contact of contacts">
+        <div *ngIf="!!contact">
+          <input type="radio" name="contact" (click)="onRowSelected(contact.id)">
+            <p>{{contact.name}}</p>
+            <p>{{contact.lastName}}</p>
+            <div *ngFor="let phone of contact.phones">
+              <p>{{phone.phone}}</p>
+            </div>
+            <button (click)="onDelete(contact.id)">Delete</button>
         </div>
-        <button (click)="onDelete(contact.id)">Delete</button>
+      </div> -->
     </div>
   </div>
 </div>
