@@ -26,6 +26,10 @@ export class ContactComponent implements OnInit {
   constructor(private _fb: FormBuilder) {}
 
   ngOnInit() {
+    this.resetForm();
+  }
+
+  resetForm(){
     this.myForm = this._fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.minLength(3)]],
@@ -51,7 +55,7 @@ export class ContactComponent implements OnInit {
     control.removeAt(i);
   }
 
-  onSubmit(model: Contact){
+  onSubmit(model: Contact) {
     if(!this.updateMode){
       this.contacts.push({id: this.id++, ...model});
     }else{
@@ -62,19 +66,30 @@ export class ContactComponent implements OnInit {
       this.updateMode = false;
     }
 
-    this.ngOnInit();  
+    this.resetForm(); 
     console.log(this.contacts);
   }
 
-  private onDelete(id: number):void{
+  private onDelete(id: number):void {
     const index: number = this.contacts.findIndex(x => !!x && x.id === id);
     this.contacts[index] = null;
   }
 
   private onRowSelected(id: number): void {
+    this.resetForm();
     const index: number = this.contacts.findIndex(x => !!x && x.id === id);
     this.updateMode = true;
     this.currContact = this.contacts[index];
+    this.myForm.controls["name"].setValue(this.currContact.name);
+    this.myForm.controls["lastName"].setValue(this.currContact.lastName);
+
+    const numPhones = this.currContact.phones.length;
+
+    for(let i = 1; i < numPhones;i++){
+      this.addPhone();
+    }
+
+    this.myForm.controls["phones"].setValue(this.currContact.phones);
   }
 
   phoneValidator(control: FormControl):{ [s: string]: boolean }{

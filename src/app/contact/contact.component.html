@@ -1,3 +1,4 @@
+<h1>Contact Form</h1>
 <form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit(myForm.value)">
     <div class="form-group">
         <label>Name: </label>
@@ -34,26 +35,30 @@
             || myForm.controls.lastName.touched)" class="text-danger">
             Incorrect Phone Number Format.
             </small>
-            <a type="button" (click)="removePhone(i)">x</a>
+            <a class ="btn removePhoneBtn" type="button" (click)="removePhone(i)">x</a>
           </div>
         </div>
       </div>
     </div>
-    <a type="button" (click)="addPhone()">Add new phone</a><br>
-    <button type="submit" [disabled]="!myForm.valid">{{!updateMode?'Submit':'Update'}}</button>
+    <div class="row">
+      <a class="btn custom-btn" type="button" (click)="addPhone()">Add new phone</a>
+      <button type="submit" [disabled]="!myForm.valid">{{!updateMode?'Submit':'Update'}}</button>    
+    </div>
+    
 </form>
 
 <br>
 
-
-<div *ngFor="let contact of contacts">
+<div>
+  <div *ngFor="let contact of contacts">
     <div *ngIf="!!contact">
       <input type="radio" name="contact" (click)="onRowSelected(contact.id)">
         <p>{{contact.name}}</p>
         <p>{{contact.lastName}}</p>
         <div *ngFor="let phone of contact.phones">
-          <p>{{phone}}</p>
+          <p>{{phone.phone}}</p>
         </div>
         <button (click)="onDelete(contact.id)">Delete</button>
     </div>
+  </div>
 </div>

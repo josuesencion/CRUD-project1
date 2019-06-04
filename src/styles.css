@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+.custom-btn {
+    margin-right: 1rem;
+}
+.removePhoneBtn{
+    margin-left: 1rem;
+}
